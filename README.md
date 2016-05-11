@@ -1,2 +1,2 @@
 # BancoCentral
-Projeto Final da disciplina de Metodologia e Linguagem de ProgramaÃ§Ã£o III.
+Projeto Final da disciplina de Metodologia e Linguagem de Programação III.
