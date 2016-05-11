@@ -1,7 +1,6 @@
-package br.unipe.cc.mlpIII.ui;
+package br.unipe.cc.mlpIII.gui;
 
 public class Principal {
 	public static void main(String[] args) {
-		System.out.println("hi");
 	}
 }
