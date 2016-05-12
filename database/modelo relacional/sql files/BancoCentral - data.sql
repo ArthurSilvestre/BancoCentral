@@ -18,15 +18,15 @@ INSERT INTO `contas` (`codigo`, `codpessoa`, `numero`, `saldo`) VALUES
 
 -- Copiando dados para a tabela bancocentral.pessoa: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` (`codigo`, `nome`, `datanascimento`, `sexo`) VALUES
-	(1, 'Arthur', '1994-09-22 00:00:00', 'M'),
-	(2, 'Larissa', '1994-02-25 00:00:00', 'F');
+INSERT INTO `pessoa` (`codigo`, `nome`) VALUES
+	(1, 'Arthur'),
+	(2, 'Larissa');
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 
 -- Copiando dados para a tabela bancocentral.pessoafisica: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `pessoafisica` DISABLE KEYS */;
-INSERT INTO `pessoafisica` (`codpessoa`, `rg`, `cpf`) VALUES
-	(1, '3195313', '08678438452');
+INSERT INTO `pessoafisica` (`codpessoa`, `rg`, `cpf`, `datanascimento`, `sexo`) VALUES
+	(1, '3195313', '08678438452', '1994-09-22 00:00:00', 'M');
 /*!40000 ALTER TABLE `pessoafisica` ENABLE KEYS */;
 
 -- Copiando dados para a tabela bancocentral.pessoajuridica: ~1 rows (aproximadamente)

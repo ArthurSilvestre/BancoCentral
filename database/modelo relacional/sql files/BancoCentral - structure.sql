@@ -23,8 +23,6 @@ USE `BancoCentral` ;
 CREATE TABLE IF NOT EXISTS `BancoCentral`.`pessoa` (
   `codigo` INT(11) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(50) NOT NULL,
-  `datanascimento` DATETIME NOT NULL,
-  `sexo` CHAR(1) NOT NULL DEFAULT 'I',
   PRIMARY KEY (`codigo`))
 ENGINE = InnoDB;
 
@@ -68,6 +66,8 @@ CREATE TABLE IF NOT EXISTS `BancoCentral`.`pessoafisica` (
   `codpessoa` INT(11) NOT NULL,
   `rg` VARCHAR(15) NOT NULL,
   `cpf` VARCHAR(11) NOT NULL,
+  `datanascimento` DATETIME NOT NULL,
+  `sexo` CHAR(1) NOT NULL DEFAULT 'I',
   PRIMARY KEY (`codpessoa`),
   CONSTRAINT `fk_pessoafisica_pessoa`
     FOREIGN KEY (`codpessoa`)
