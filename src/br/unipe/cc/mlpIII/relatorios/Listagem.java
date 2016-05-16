@@ -1,5 +1,7 @@
 package br.unipe.cc.mlpIII.relatorios;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +15,7 @@ public class Listagem {
 	private PrintWriter printWriter;
 	private List<Object> objects;
 	
+	//Constructor
 	public Listagem(){
 		try {
 			this.inicializarRelatorio();
@@ -20,16 +23,8 @@ public class Listagem {
 			e.printStackTrace(); //TODO: Menssagem do catch
 		}
 	}
-	
-	public void gerarRelatorio(){
-		this.printWriter.println("Relatorio");
-		this.printWriter.println("--------------------------------------------------");
-		for	(Object	object : objects){ 
-			this.printWriter.println(object.toString());
-		}
-		this.printWriter.println("--------------------------------------------------");
-	}	
 
+	//Methods	
 	public void inicializarRelatorio() throws IOException {
 		this.fileLocation = "relatorio.txt";
 		this.scanner = new Scanner(System.in);
@@ -44,6 +39,29 @@ public class Listagem {
 		this.printWriter.close();
 	}
 
+	public void gerarRelatorio(){
+		this.printWriter.println("Centro Universitário de joão Pessoa - UNIPE");
+		this.printWriter.println("Metodologia e Linguagem de programação avançada");
+		this.printWriter.println();
+		this.printWriter.println("Listagem de " + objects.getClass());
+		this.printWriter.println("--------------------------------------------------------------------------------------------------------------------------");
+		this.printWriter.println();
+		for	(Object	object : objects){ 
+			this.printWriter.println(object.toString());
+		}
+		this.printWriter.println();
+		this.printWriter.println("--------------------------------------------------------------------------------------------------------------------------");
+	}	
+
+	public void abrirRelatorio(){
+		try {
+			Desktop.getDesktop().open( new File( "relatorios\\" + this.fileLocation ) );
+		} catch (IOException e) {
+			e.printStackTrace(); //TODO: Menssagem do catch
+		}
+	}
+	
+	//Get's and set's methods
 	public List<Object> getObjects() {
 		return objects;
 	}
@@ -51,4 +69,6 @@ public class Listagem {
 	public void setObjects(List<Object> objects) {
 		this.objects = objects;
 	}
+
+	//Override methods
 }
