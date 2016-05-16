@@ -1,0 +1,8 @@
+Relatorio
+--------------------------------------------------
+Conta [codigo=1, codpessoa=Pessoa [codigo=1, nome=A], numero=A, saldo=10.0]
+Conta [codigo=2, codpessoa=Pessoa [codigo=2, nome=B], numero=B, saldo=10.0]
+Conta [codigo=3, codpessoa=Pessoa [codigo=3, nome=C], numero=C, saldo=10.0]
+Conta [codigo=4, codpessoa=Pessoa [codigo=4, nome=D], numero=D, saldo=10.0]
+Conta [codigo=5, codpessoa=Pessoa [codigo=5, nome=E], numero=E, saldo=10.0]
+--------------------------------------------------
