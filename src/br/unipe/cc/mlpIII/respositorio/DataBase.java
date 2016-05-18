@@ -34,11 +34,11 @@ public class DataBase {
 		try {
 			this.dbConnection.close();
 			this.dbStatement.close();
-			this.dbResultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace(); //TODO: Mensagem do catch
 		}
 		
+		close();
 	}
 
 	public void close(){
@@ -64,11 +64,10 @@ public class DataBase {
 		return resultSetQuery;
 	}
 	
-	public ResultSet insert(String table, List<String> fields, List<String> values){
+	public void insert(String table, List<String> fields, List<String> values){
 		int f = 0, v = 0;
 		String sInsertFields = "";
 		String sInsertValues = "";
-		ResultSet resultSetInsert = null;
 
 		if (fields.isEmpty() || values.isEmpty() || table.isEmpty() || (fields.size() != values.size())){
 			//TODO: Gerar mensagem de que não foi possível inserir os dados no banco.
@@ -78,21 +77,17 @@ public class DataBase {
 
 			try {
 				System.out.println("INSERT INTO " + table + "(" + sInsertFields + ") VALUES (" + sInsertValues + ")"); //TODO: Apagar esta linha
-				resultSetInsert = this.dbStatement.executeQuery("INSERT INTO " + table + "(" + sInsertFields + ") VALUES (" + sInsertValues + ")");
+				this.dbStatement.executeQuery("INSERT INTO " + table + "(" + sInsertFields + ") VALUES (" + sInsertValues + ")");
 			} catch (SQLException e) {
 				e.printStackTrace(); //TODO: Mensagem do catch
 			}
 		}
-
-		this.dbResultSet = resultSetInsert;
-		return resultSetInsert;
 	}
 
-	public ResultSet update(String table, List<String> fields, List<String> values, String condition){
+	public void update(String table, List<String> fields, List<String> values, String condition){
 		String sUpdates = ""; 
 		String[] aInsertFields;
 		String[] aInsertValues;
-		ResultSet resultSetInsert = null;
 		
 		if (fields.isEmpty() || values.isEmpty() || table.isEmpty() || (fields.size() != values.size())){
 			//TODO: Gerar mensagem de que não foi possível inserir os dados no banco.
@@ -105,14 +100,26 @@ public class DataBase {
 			
 			try {
 				System.out.println("UPDATE " + table + " SET " + sUpdates + (condition.isEmpty() ? "" : " WHERE " + condition)); //TODO: Apagar esta linha
-				resultSetInsert = this.dbStatement.executeQuery("UPDATE " + table + " SET " + sUpdates + (condition.isEmpty() ? "" : " WHERE " + condition));
+				this.dbStatement.execute("UPDATE " + table + " SET " + sUpdates + (condition.isEmpty() ? "" : " WHERE " + condition));
 			} catch (SQLException e) {
 				e.printStackTrace(); //TODO: Mensagem do catch
 			}
 		}
+	}
+	
+	public void delete(String table, String condition){
 		
-		this.dbResultSet = resultSetInsert;
-		return resultSetInsert;
+		System.out.println("DELETE FROM " + table + " WHERE " + condition);
+		
+		if (!condition.isEmpty()){
+			try {
+				this.dbStatement.execute("DELETE FROM " + table + " WHERE " + condition);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			//TODO: Mensagem do else
+		}
 	}
 	
 	//Get's and set's methods
