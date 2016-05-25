@@ -1,4 +1,4 @@
-package br.unipe.cc.mlpIII.respositorio;
+package br.unipe.cc.mlpIII.repositorio;
 
 import java.sql.*;
 import java.util.List;
@@ -54,7 +54,6 @@ public class DataBase {
 		ResultSet resultSetQuery = null;
 		
 		try {
-			System.out.println(stringQuery); //TODO: Apagar esta linha
 			resultSetQuery = this.dbStatement.executeQuery(stringQuery);
 		} catch (SQLException e) {
 			e.printStackTrace(); //TODO: Mensagem do catch
@@ -76,7 +75,6 @@ public class DataBase {
 			for	(String	value : values) sInsertValues += (v++ == 0 ? "" : "," + value);
 
 			try {
-				System.out.println("INSERT INTO " + table + "(" + sInsertFields + ") VALUES (" + sInsertValues + ")"); //TODO: Apagar esta linha
 				this.dbStatement.executeQuery("INSERT INTO " + table + "(" + sInsertFields + ") VALUES (" + sInsertValues + ")");
 			} catch (SQLException e) {
 				e.printStackTrace(); //TODO: Mensagem do catch
@@ -99,7 +97,6 @@ public class DataBase {
 				sUpdates += (i == 0 ? "" : ",") + aInsertFields[i] + " = " + aInsertValues[i];
 			
 			try {
-				System.out.println("UPDATE " + table + " SET " + sUpdates + (condition.isEmpty() ? "" : " WHERE " + condition)); //TODO: Apagar esta linha
 				this.dbStatement.execute("UPDATE " + table + " SET " + sUpdates + (condition.isEmpty() ? "" : " WHERE " + condition));
 			} catch (SQLException e) {
 				e.printStackTrace(); //TODO: Mensagem do catch

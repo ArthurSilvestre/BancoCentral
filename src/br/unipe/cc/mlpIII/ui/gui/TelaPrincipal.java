@@ -5,6 +5,9 @@ import java.awt.Toolkit;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+
+import br.unipe.cc.mlpIII.util.ErroLog;
+import javafx.scene.image.Image;
 import javax.swing.JMenuBar;
 import java.awt.Dimension;
 import javax.swing.JButton;
@@ -14,19 +17,19 @@ import java.awt.Point;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.ComponentOrientation;
 
 @SuppressWarnings({"serial","unused"})
 public class TelaPrincipal extends JFrame{
 	private JLabel backgroundLabel;
 	
-	private JMenuBar menuBar;
-	
-	private JButton btnEfetuarLancamentos;
-	private JButton btnGerarExtrato;
-	private JButton btnContas;
-	private JButton btnPessoaFsica;
-	private JButton btnPessoaJurdica;
-	private JButton btnUsuarios;
+	private JButton btnEfetuarLancamentos = new JButton("Efetuar Lan\u00E7amentos");
+	private JButton btnGerarExtrato = new JButton("Gerar Extrato");
+	private JButton btnContas = new JButton("Contas");
+	private JButton btnPessoaFsica = new JButton("Pessoa F\u00EDsica");
+	private JButton btnPessoaJurdica = new JButton("Pessoa Jur\u00EDdica");
+	private JButton btnUsuarios = new JButton("Usuarios");
+	private JButton btnErro = new JButton("Erro");
 	
 	public TelaPrincipal() {
 		initialize();
@@ -35,103 +38,90 @@ public class TelaPrincipal extends JFrame{
 	private void initialize() {
 		new JFrame();
 		this.setTitle("Banco Central");
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaPrincipal.class.getResource("/com/sun/java/swing/plaf/windows/icons/Computer.gif")));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagens\\bancocentral.png"));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(MAXIMIZED_BOTH);
 		getContentPane().setLayout(null);
 		
-		this.menuBar = new JMenuBar();
-		this.menuBar.setBounds(0, 0, 1920, 80);
-		getContentPane().add(this.menuBar);
-		
-		this.btnEfetuarLancamentos = new JButton("Efetuar Lan\u00E7amentos");
-		this.btnEfetuarLancamentos.setIcon(null);
-		this.btnEfetuarLancamentos.setMargin(new Insets(2, 10, 2, 10));
-		this.btnEfetuarLancamentos.setLocation(new Point(10, 10));
-		this.btnEfetuarLancamentos.setPreferredSize(new Dimension(64, 64));
+		this.btnEfetuarLancamentos.setLocation(new Point(10, 53));
+		this.btnEfetuarLancamentos.setSize(new Dimension(300, 60));
 		this.btnEfetuarLancamentos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		this.btnEfetuarLancamentos.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.btnEfetuarLancamentos.setSize(new Dimension(64, 64));
-		this.btnEfetuarLancamentos.setMinimumSize(new Dimension(64, 64));
-		this.btnEfetuarLancamentos.setMaximumSize(new Dimension(150, 64));
-		menuBar.add(this.btnEfetuarLancamentos);
+		this.btnEfetuarLancamentos.setIcon(new ImageIcon("imagens\\lancamento.png"));
 		
-		this.btnGerarExtrato = new JButton("Gerar Extrato");
-		this.btnGerarExtrato.setMargin(new Insets(2, 10, 2, 10));
+		this.btnGerarExtrato.setLocation(new Point(10, 124));
+		this.btnGerarExtrato.setSize(new Dimension(300, 60));
 		this.btnGerarExtrato.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		this.btnGerarExtrato.setSize(new Dimension(64, 64));
-		this.btnGerarExtrato.setPreferredSize(new Dimension(64, 64));
-		this.btnGerarExtrato.setMinimumSize(new Dimension(64, 64));
-		this.btnGerarExtrato.setMaximumSize(new Dimension(150, 64));
-		this.btnGerarExtrato.setLocation(new Point(10, 10));
-		this.btnGerarExtrato.setAlignmentX(0.5f);
-		menuBar.add(this.btnGerarExtrato);
-		
-		this.btnContas = new JButton("Contas");
+		this.btnGerarExtrato.setIcon(new ImageIcon("imagens\\extrato.png"));
+
+		this.btnContas.setLocation(new Point(317, 53));
+		this.btnContas.setSize(new Dimension(300, 60));
+		this.btnContas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		this.btnContas.setIcon(new ImageIcon("imagens\\conta.png"));
 		this.btnContas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaCadastroClassesModelo cadastroUsuarios = new TelaCadastroClassesModelo("contas As Con,pessoa As P",new String[]{"Con.codigo","P.nome","Con.numero","Con.saldo"}, new String[]{"Código","Responsável","Número","Saldo"},"P.codigo = Con.codpessoa");
+				TelaCadastroClassesModelo cadastroUsuarios = new TelaCadastroClassesModelo("pessoa As P, contas As Con",new String[]{"Con.codigo","P.nome","Con.numero","Con.saldo"}, new String[]{"Código","Responsável","Número","Saldo"},"P.codigo = Con.codpessoa");
 			}
 		});
-		this.btnContas.setMargin(new Insets(2, 10, 2, 10));
-		this.btnContas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		this.btnContas.setSize(new Dimension(64, 64));
-		this.btnContas.setPreferredSize(new Dimension(64, 64));
-		this.btnContas.setMinimumSize(new Dimension(64, 64));
-		this.btnContas.setMaximumSize(new Dimension(150, 64));
-		this.btnContas.setLocation(new Point(10, 10));
-		this.btnContas.setAlignmentX(Component.CENTER_ALIGNMENT);
-		menuBar.add(this.btnContas);
 		
-		this.btnPessoaFsica = new JButton("Pessoa F\u00EDsica");
+		this.btnPessoaFsica.setLocation(new Point(317, 124));
+		this.btnPessoaFsica.setSize(new Dimension(300, 60));
+		this.btnPessoaFsica.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		this.btnPessoaFsica.setIcon(new ImageIcon("imagens\\pessoafisica.png"));
 		this.btnPessoaFsica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaCadastroClassesModelo cadastroUsuarios = new TelaCadastroClassesModelo("pessoa As P, pessoafisica As PF",new String[]{"P.codigo","P.nome","PF.rg","PF.cpf","PF.datanascimento","PF.sexo"}, new String[]{"Código","Nome","RG","CPF","Data de Nascimento","Sexo"},"P.codigo = PF.codpessoa");
 			}
 		});
-		this.btnPessoaFsica.setSize(new Dimension(64, 64));
-		this.btnPessoaFsica.setPreferredSize(new Dimension(64, 64));
-		this.btnPessoaFsica.setMinimumSize(new Dimension(64, 64));
-		this.btnPessoaFsica.setMaximumSize(new Dimension(150, 64));
-		this.btnPessoaFsica.setMargin(new Insets(2, 10, 2, 10));
-		this.btnPessoaFsica.setLocation(new Point(10, 10));
-		this.btnPessoaFsica.setAlignmentX(0.5f);
-		menuBar.add(this.btnPessoaFsica);
 		
-		this.btnPessoaJurdica = new JButton("Pessoa Jur\u00EDdica");
+		this.btnPessoaJurdica.setLocation(new Point(317, 195));
+		this.btnPessoaJurdica.setSize(new Dimension(300, 60));
+		this.btnPessoaJurdica.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		this.btnPessoaJurdica.setIcon(new ImageIcon("imagens\\pessoajuridica.png"));
 		this.btnPessoaJurdica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaCadastroClassesModelo cadastroUsuarios = new TelaCadastroClassesModelo("pessoa As P, pessoajuridica As PJ",new String[]{"P.codigo","P.nome","PJ.inscricaoestadual","PJ.cnpj"}, new String[]{"Código","Nome","Inscrição Estadual","CNPJ"},"P.codigo = PJ.codpessoa");
 			}
 		});
-		this.btnPessoaJurdica.setSize(new Dimension(64, 64));
-		this.btnPessoaJurdica.setPreferredSize(new Dimension(64, 64));
-		this.btnPessoaJurdica.setMinimumSize(new Dimension(64, 64));
-		this.btnPessoaJurdica.setMaximumSize(new Dimension(150, 64));
-		this.btnPessoaJurdica.setMargin(new Insets(2, 10, 2, 10));
-		this.btnPessoaJurdica.setLocation(new Point(10, 10));
-		this.btnPessoaJurdica.setAlignmentX(0.5f);
-		menuBar.add(this.btnPessoaJurdica);
 		
-		this.btnUsuarios = new JButton("Usuarios");
+		this.btnUsuarios.setLocation(new Point(317, 266));
+		this.btnUsuarios.setSize(new Dimension(300, 60));
+		this.btnUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		this.btnUsuarios.setIcon(new ImageIcon("imagens\\usuario.png"));
 		this.btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaCadastroClassesModelo cadastroUsuarios = new TelaCadastroClassesModelo("usuario",new String[]{"codigo","id","nivel"}, new String[]{"Código","ID","Nível"},""); 
 			}
 		});
-		this.btnUsuarios.setSize(new Dimension(64, 64));
-		this.btnUsuarios.setPreferredSize(new Dimension(64, 64));
-		this.btnUsuarios.setMinimumSize(new Dimension(64, 64));
-		this.btnUsuarios.setMaximumSize(new Dimension(150, 64));
-		this.btnUsuarios.setMargin(new Insets(2, 10, 2, 10));
-		this.btnUsuarios.setLocation(new Point(10, 10));
-		this.btnUsuarios.setAlignmentX(0.5f);
-		menuBar.add(this.btnUsuarios);
+		btnErro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String[] vetorDeStrings = {"1"};
+				String variavelDeString;
+				
+				try {
+					variavelDeString = vetorDeStrings[1];
+				} catch (Exception e) {
+					ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
+				}
+			}
+		});
 		
+		this.btnErro.setLocation(new Point(10, 195));
+		this.btnErro.setSize(new Dimension(300, 60));
+		this.btnErro.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		this.btnErro.setIcon(new ImageIcon("imagens\\erro.png"));
+
 		this.backgroundLabel = new JLabel("");
 		this.backgroundLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.backgroundLabel.setIcon(new ImageIcon("imagens\\background.png"));
 		this.backgroundLabel.setBounds(0, 0, 1920, 1080);
+
+		this.getContentPane().add(this.btnEfetuarLancamentos);
+		this.getContentPane().add(this.btnGerarExtrato);
+		this.getContentPane().add(this.btnErro);
+		this.getContentPane().add(this.btnContas);
+		this.getContentPane().add(this.btnPessoaFsica);
+		this.getContentPane().add(this.btnPessoaJurdica);
+		this.getContentPane().add(this.btnUsuarios);
 		this.getContentPane().add(this.backgroundLabel);
 
 		this.setVisible(true);

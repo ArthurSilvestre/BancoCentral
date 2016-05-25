@@ -6,11 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Scanner;
 
 public class Listagem {
 	private String fileLocation;
-	private Scanner scanner;
 	private FileWriter fileWriter;
 	private PrintWriter printWriter;
 	private List<Object> objects;
@@ -27,14 +25,11 @@ public class Listagem {
 	//Methods	
 	public void inicializarRelatorio() throws IOException {
 		this.fileLocation = "relatorio.txt";
-		this.scanner = new Scanner(System.in);
 		this.fileWriter = new FileWriter("relatorios\\" + this.fileLocation);
 		this.printWriter = new PrintWriter(this.fileWriter);
 	}
 	
 	public void finalizarRelatorio() throws IOException {
-		this.fileLocation = "";
-		this.scanner.close();
 		this.fileWriter.close();
 		this.printWriter.close();
 	}
@@ -47,11 +42,24 @@ public class Listagem {
 		this.printWriter.println("--------------------------------------------------------------------------------------------------------------------------");
 		this.printWriter.println();
 		for	(Object	object : objects){ 
-			this.printWriter.println(object.toString());
+			this.printWriter.println(object);
 		}
 		this.printWriter.println();
 		this.printWriter.println("--------------------------------------------------------------------------------------------------------------------------");
-	}	
+	}
+	
+	public void gerarRelatorio(Object[] dados){
+		this.printWriter.println("Centro Universitário de joão Pessoa - UNIPE");
+		this.printWriter.println("Metodologia e Linguagem de programação avançada");
+		this.printWriter.println();
+		this.printWriter.println("--------------------------------------------------------------------------------------------------------------------------");
+		this.printWriter.println();
+		for (int i = 0; i < dados.length; i++) {
+			this.printWriter.println((String) dados[i]);
+		}
+		this.printWriter.println();
+		this.printWriter.println("--------------------------------------------------------------------------------------------------------------------------");
+	}
 
 	public void abrirRelatorio(){
 		try {

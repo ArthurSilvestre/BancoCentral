@@ -4,43 +4,53 @@ import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.StringTokenizer;
+import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import br.unipe.cc.mlpIII.respositorio.DataBase;
+import br.unipe.cc.mlpIII.relatorios.Listagem;
+import br.unipe.cc.mlpIII.repositorio.DataBase;
+import br.unipe.cc.mlpIII.util.JFunctions;
+
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class TelaCadastroClassesModelo extends JFrame{
-	private DataBase dataBase;
+	private DataBase dataBase = new DataBase();
+	
 	private String tableQuery;
 	private String[] fieldsQuery;
-	private String[][] dataQuery;
+	private String[] titlesTable;
 	private String conditionQuery;
 
-	private String[] titlesTable;
-	private JTable table;
-	private JScrollPane jScrollPane;
-	private DefaultTableModel modelTable;
+	private DefaultTableModel modelTable = new DefaultTableModel();
+	private JTable table = new JTable(modelTable);
+	private JScrollPane jScrollPane = new JScrollPane(table);
 	
-	public TelaCadastroClassesModelo(String selectTable, String[] fields, String[] titles, String conditionQuery) {
-		new JFrame("Usuarios");
+	private JButton incluir = new JButton("");
+	private JButton alterar = new JButton("");
+	private JButton excluir = new JButton("");
+	private JButton relatorio = new JButton("");
+	private JButton retornar = new JButton("");
+	
+	//Constructor
+	public TelaCadastroClassesModelo(String tableQuery, String[] fieldsQuery, String[] titlesTable, String conditionQuery) {
+		new JFrame();
 		
-		this.tableQuery = selectTable;
-		this.fieldsQuery = fields;
-		this.titlesTable = titles;
+		this.tableQuery = tableQuery;
+		this.fieldsQuery = fieldsQuery;
+		this.titlesTable = titlesTable;
 		this.conditionQuery = conditionQuery;
 		
-		this.dataBase = new DataBase();
-		this.modelTable = new DefaultTableModel(this.dataQuery, this.titlesTable);
-		this.table = new JTable(modelTable);
-		this.jScrollPane = new JScrollPane(table);
+		for (int i = 0; i < this.titlesTable.length; i++) 
+			this.modelTable.addColumn(this.titlesTable[i]);
 		
 		dataBase.openConnection();
 		
@@ -50,77 +60,102 @@ public class TelaCadastroClassesModelo extends JFrame{
 		this.setVisible(true);
 	}	
 
+	//Methods
 	private void initialize() {
 		this.setResizable(false);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaCadastroClassesModelo.class.getResource("/com/sun/java/swing/plaf/windows/icons/Computer.gif")));
 		this.setBounds(100, 100, 600, 650);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
+		this.setLocationRelativeTo( null );
 
 		this.jScrollPane.setBounds(10, 11, 574, 540);				
-		this.getContentPane().add(this.jScrollPane);
 
-		JButton retornar = new JButton("");
-		retornar.addActionListener(new ActionListener() {
+		this.incluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				incluirRegistro();
+			}
+		});
+		this.incluir.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/com/sun/javafx/scene/web/skin/Copy_16x16_JFX.png")));
+		this.incluir.setBounds(244, 562, 60, 49);
+		
+		this.alterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				atualizarRegistro();
+			}
+		});
+		this.alterar.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/com/sun/javafx/scene/web/skin/Paste_16x16_JFX.png")));
+		this.alterar.setBounds(314, 562, 60, 49);
+
+		this.excluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deletarRegistro();
+			}
+		});
+		this.excluir.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/com/sun/deploy/uitoolkit/impl/fx/ui/resources/image/graybox_error.png")));
+		this.excluir.setBounds(384, 562, 60, 49);
+
+		this.relatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				gerarRelatorioRegistros();
+			}
+		});
+		this.relatorio.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/sun/print/resources/orientPortrait.png")));
+		this.relatorio.setBounds(454, 562, 60, 49);
+
+		this.retornar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dataBase.closeConnection();
 				dispose();
 			}
 		});
-		retornar.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/com/sun/javafx/scene/web/skin/Redo_16x16_JFX.png")));
-		retornar.setBounds(524, 562, 60, 49);
-		this.getContentPane().add(retornar);
-		
-		JButton excluir = new JButton("");
-		excluir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				deletarRegistro();
-			}
-		});
-		excluir.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/com/sun/deploy/uitoolkit/impl/fx/ui/resources/image/graybox_error.png")));
-		excluir.setBounds(454, 562, 60, 49);
-		this.getContentPane().add(excluir);
-		
-		JButton alterar = new JButton("");
-		alterar.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/com/sun/javafx/scene/web/skin/Paste_16x16_JFX.png")));
-		alterar.setBounds(384, 562, 60, 49);
-		this.getContentPane().add(alterar);
-		
-		JButton incluir = new JButton("");
-		incluir.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/com/sun/javafx/scene/web/skin/Copy_16x16_JFX.png")));
-		incluir.setBounds(314, 562, 60, 49);
-		this.getContentPane().add(incluir);
+		this.retornar.setIcon(new ImageIcon(TelaCadastroClassesModelo.class.getResource("/com/sun/javafx/scene/web/skin/Redo_16x16_JFX.png")));
+		this.retornar.setBounds(524, 562, 60, 49);
+
+		this.getContentPane().add(this.jScrollPane);
+		this.getContentPane().add(this.incluir);
+		this.getContentPane().add(this.alterar);		
+		this.getContentPane().add(this.excluir);
+		this.getContentPane().add(this.relatorio);
+		this.getContentPane().add(this.retornar);		
 	}
 	
 	public void fillModelTable(){
 		String sQuery = "SELECT ";
+		List<Object> fields;
 		
-		if (fieldsQuery.length > 0){
-			for (int i = 0; i < fieldsQuery.length; i++) 
-				sQuery += (i == 0 ? "" : ",") + fieldsQuery[i];
-		} else {
+		if (fieldsQuery.length > 0)
+			for (int i = 0; i < fieldsQuery.length; i++) sQuery += (i == 0 ? "" : ",") + fieldsQuery[i];
+		else 
 			sQuery += "*";
-		}
 		
 		sQuery += " FROM " + this.tableQuery;
 		
-		if (!this.conditionQuery.isEmpty()) 
-			sQuery += " WHERE " + this.conditionQuery;
+		if (!this.conditionQuery.isEmpty()) sQuery += " WHERE " + this.conditionQuery;
 		
 		dataBase.query(sQuery);
 
 		try {
 			while (dataBase.getDbResultSet().next()){
-				List<Object> fields = new ArrayList<Object>();
+				fields = new ArrayList<Object>();
 				
 				for (int i = 0; i < this.fieldsQuery.length; i++)
 					fields.add(dataBase.getDbResultSet().getObject(this.fieldsQuery[i]));
 
 				modelTable.addRow(fields.toArray());
+			
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.printStackTrace(); //TODO: Mensagem do catch
 		}
+	}
+	
+	public void incluirRegistro(){
+		
+	}
+	
+	public void atualizarRegistro(){
+		
 	}
 	
 	public void deletarRegistro(){
@@ -128,10 +163,52 @@ public class TelaCadastroClassesModelo extends JFrame{
 		String codigo = modelTable.getValueAt(row, 0).toString();
 		String message = "Deseja realmente excluir este registro?";
 		String title = "Confirmação";
-		
+		StringTokenizer stringTokenizerDataBaseSettings = new StringTokenizer(this.tableQuery);
+
 		if (JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-			dataBase.delete(this.tableQuery, "codigo = " + codigo);
+			dataBase.delete(stringTokenizerDataBaseSettings.nextToken(" "), "codigo = " + codigo);
 			modelTable.removeRow(row);
 		}
 	}
+	
+	public void gerarRelatorioRegistros(){
+		String row = new String(); 
+		Vector<Integer> rows = new Vector<Integer>();
+		List<String> dados = new ArrayList<String>(); 
+		
+		for (int i = 0; i < this.fieldsQuery.length; i++)
+			row += ( i == 0 ? "" : ",") + titlesTable[i] + JFunctions.replicate(" ", 30 - titlesTable[i].length());
+		
+		dados.add(row);
+		
+		for (int i = 0; i < this.table.getSelectedRows().length; i++)
+			rows.add( this.table.getSelectedRows()[i] );
+		
+		if (rows.toArray().length > 0){
+			for (int i = 0 ; i < modelTable.getRowCount() ; i++) {
+				if (rows.contains(i)){
+					row = ""; 
+
+					for (int j = 0; j < this.fieldsQuery.length; j++)
+						row += ( j == 0 ? "" : ",") + modelTable.getValueAt(i, j).toString() + JFunctions.replicate(" ", 30 - modelTable.getValueAt(i, j).toString().length());
+					
+					dados.add(row);
+				}
+			}
+			
+			Listagem relatorioListagem = new Listagem();
+			relatorioListagem.gerarRelatorio(dados.toArray());
+			try {
+				relatorioListagem.finalizarRelatorio();
+			} catch (IOException e) {
+				e.printStackTrace(); //TODO: Mensagem do catch
+			}
+			relatorioListagem.abrirRelatorio();
+		} else {
+			//TODO: Mensagem do else
+		}
+	}
+
+	//Get's and set's methods
+	//Override methods
 }

@@ -1,4 +1,4 @@
-package br.unipe.cc.mlpIII.respositorio;
+package br.unipe.cc.mlpIII.repositorio;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
