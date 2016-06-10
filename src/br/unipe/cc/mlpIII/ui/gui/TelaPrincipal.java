@@ -37,7 +37,7 @@ public class TelaPrincipal extends JFrame{
 
 	private void initialize() {
 		new JFrame();
-		this.setTitle("Banco Central");
+		this.setTitle("BANKing");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("imagens\\bancocentral.png"));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(MAXIMIZED_BOTH);
@@ -69,7 +69,7 @@ public class TelaPrincipal extends JFrame{
 		this.btnPessoaFsica.setIcon(new ImageIcon("imagens\\pessoafisica.png"));
 		this.btnPessoaFsica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaCadastroClassesModelo cadastroUsuarios = new TelaCadastroClassesModelo("pessoa As P, pessoafisica As PF",new String[]{"P.codigo","P.nome","PF.rg","PF.cpf","PF.datanascimento","PF.sexo"}, new String[]{"Código","Nome","RG","CPF","Data de Nascimento","Sexo"},"P.codigo = PF.codpessoa");
+				TelaCadastroClassesModelo cadastroUsuarios = new TelaCadastroClassesModelo("pessoa As P, pessoafisica As PF",new String[]{"P.codigo","P.nome","PF.rg","PF.cpf","PF.sexo"}, new String[]{"Código","Nome","RG","CPF","Sexo"},"P.codigo = PF.codpessoa");
 			}
 		});
 		

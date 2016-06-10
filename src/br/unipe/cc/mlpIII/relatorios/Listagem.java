@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import br.unipe.cc.mlpIII.util.ErroLog;
+
 public class Listagem {
 	private String fileLocation;
 	private FileWriter fileWriter;
@@ -18,7 +20,7 @@ public class Listagem {
 		try {
 			this.inicializarRelatorio();
 		} catch (IOException e) {
-			e.printStackTrace(); //TODO: Menssagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 	}
 
@@ -65,7 +67,7 @@ public class Listagem {
 		try {
 			Desktop.getDesktop().open( new File( "relatorios\\" + this.fileLocation ) );
 		} catch (IOException e) {
-			e.printStackTrace(); //TODO: Menssagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 	}
 	

@@ -1,10 +1,18 @@
 package br.unipe.cc.mlpIII.modelo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import br.unipe.cc.mlpIII.repositorio.DataBase;
+import br.unipe.cc.mlpIII.util.ErroLog;
+
 public class Conta {
 	private int codigo;
 	private Pessoa responsavel;
 	private String numero;
 	private double saldo;
+
+	private DataBase dataBase = new DataBase();
 	
 	//Constructors
 	public Conta(){
@@ -16,6 +24,34 @@ public class Conta {
 		this.responsavel = responsavel;
 		this.numero = numero;
 		this.saldo = saldo;
+	}
+	
+	public Conta(int codigo, String nomeResponsavel, String numero, double saldo) {
+		this.codigo = codigo;
+		this.responsavel = getResponsavelByNome(responsavel);
+		this.numero = numero;
+		this.saldo = saldo;
+	}
+
+	private Pessoa getResponsavelByNome(Pessoa nomeResponsavel) {
+		ResultSet rs;
+		Pessoa pessoa = new Pessoa();
+		
+		dataBase.openConnection();
+		
+		rs = dataBase.query("Select * from pessoa where nome = '" + nomeResponsavel + "'");
+		
+		try {
+			if (rs.next()){
+				pessoa.setCodigo(rs.getInt("codigo"));
+				pessoa.setNome(rs.getString("nome"));
+			}
+		} catch (SQLException e) {
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
+		}
+		
+		dataBase.closeConnection();
+		return null;
 	}
 
 	//Methods

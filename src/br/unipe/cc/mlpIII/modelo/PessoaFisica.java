@@ -1,21 +1,17 @@
 package br.unipe.cc.mlpIII.modelo;
 
-import java.util.Date;
-
 public class PessoaFisica extends Pessoa {
 	private String rg;
 	private String cpf;
 	private char sexo;
-	private Date datanascimento;
 	
 	//Constructors
 	public PessoaFisica(){
 		
 	}
 
-	public PessoaFisica(int codigo, String nome, Date datanascimento, char sexo, String rg, String cpf) {
+	public PessoaFisica(int codigo, String nome, char sexo, String rg, String cpf) {
 		super(codigo, nome);
-		this.datanascimento = datanascimento;
 		this.sexo = sexo;
 		this.rg = rg;
 		this.cpf = cpf;
@@ -48,18 +44,10 @@ public class PessoaFisica extends Pessoa {
 		this.sexo = sexo;
 	}
 
-	public Date getDatanascimento() {
-		return datanascimento;
-	}
-
-	public void setDatanascimento(Date datanascimento) {
-		this.datanascimento = datanascimento;
-	}
-
 	//Override methods
 	@Override
 	public String toString() {
-		return "PessoaFisica [Pessoa="+super.toString()+", sexo=" + sexo + ", rg=" + rg + ", cpf=" + cpf + ", datanascimento=" + datanascimento+ "]";
+		return "PessoaFisica [Pessoa="+super.toString()+", sexo=" + sexo + ", rg=" + rg + ", cpf=" + cpf + "]";
 	}
 
 }

@@ -31,7 +31,7 @@ public class ErroLog {
 		try {
 			fileWriter = new FileWriter(urlFile, true);
 		} catch (IOException e) {
-			e.printStackTrace(); //TODO: Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 		printWriter = new PrintWriter(fileWriter);
 	}
@@ -40,7 +40,7 @@ public class ErroLog {
 		try {
 			fileWriter.close();
 		} catch (IOException e) {
-			e.printStackTrace(); //Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 		printWriter.close();
 	}

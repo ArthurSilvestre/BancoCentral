@@ -12,12 +12,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
+
+import br.unipe.cc.mlpIII.modelo.Conta;
+import br.unipe.cc.mlpIII.modelo.PessoaFisica;
+import br.unipe.cc.mlpIII.modelo.PessoaJuridica;
+import br.unipe.cc.mlpIII.modelo.Usuario;
 import br.unipe.cc.mlpIII.relatorios.Listagem;
 import br.unipe.cc.mlpIII.repositorio.DataBase;
+import br.unipe.cc.mlpIII.util.ErroLog;
 import br.unipe.cc.mlpIII.util.JFunctions;
-
-import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
@@ -30,6 +37,8 @@ public class TelaCadastroClassesModelo extends JFrame{
 	private String[] titlesTable;
 	private String conditionQuery;
 
+	private JFrame telaIncluir = new JFrame();
+	
 	private DefaultTableModel modelTable = new DefaultTableModel();
 	private JTable table = new JTable(modelTable);
 	private JScrollPane jScrollPane = new JScrollPane(table);
@@ -65,7 +74,7 @@ public class TelaCadastroClassesModelo extends JFrame{
 		this.setResizable(false);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaCadastroClassesModelo.class.getResource("/com/sun/java/swing/plaf/windows/icons/Computer.gif")));
 		this.setBounds(100, 100, 600, 650);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		this.setLocationRelativeTo( null );
 
@@ -146,16 +155,68 @@ public class TelaCadastroClassesModelo extends JFrame{
 			
 			}
 		} catch (SQLException e) {
-			e.printStackTrace(); //TODO: Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 	}
 	
 	public void incluirRegistro(){
+		switch (tableQuery) {
+			case "pessoa As P, contas As Con":{
+				telaIncluir = new TelaIncluirConta();
+				break;
+			}
+			case "pessoa As P, pessoafisica As PF":{
+				telaIncluir = new TelaIncluirPessoaFisica();
+				break;
+			}
+			case "pessoa As P, pessoajuridica As PJ":{
+				telaIncluir = new TelaIncluirPessoaJuridica(); 
+				break;
+			}
+			case "usuario":{
+				telaIncluir = new TelaIncluirUsuario();
+				break;
+			}
+		}
 		
+		telaIncluir.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				refreshTable();
+			}
+		});
 	}
 	
 	public void atualizarRegistro(){
-		
+		int row = table.getSelectedRow();
+
+		if (row >= 0){
+			switch (tableQuery) {
+				case "pessoa As P, contas As Con":{
+					telaIncluir = new TelaIncluirConta(new Conta((int) modelTable.getValueAt(row, 0), modelTable.getValueAt(row, 1).toString() , modelTable.getValueAt(row, 2).toString(), (double) modelTable.getValueAt(row, 3)));
+					break;
+				}
+				case "pessoa As P, pessoafisica As PF":{
+					telaIncluir = new TelaIncluirPessoaFisica(new PessoaFisica((int) modelTable.getValueAt(row, 0), modelTable.getValueAt(row, 1).toString(), modelTable.getValueAt(row, 4).toString().charAt(0), modelTable.getValueAt(row, 2).toString(), modelTable.getValueAt(row, 3).toString()));
+					break;
+				}
+				case "pessoa As P, pessoajuridica As PJ":{
+					telaIncluir = new TelaIncluirPessoaJuridica(new PessoaJuridica((int) modelTable.getValueAt(row, 0), modelTable.getValueAt(row, 1).toString(), modelTable.getValueAt(row, 2).toString(), modelTable.getValueAt(row, 3).toString())); 
+					break;
+				}
+				case "usuario":{
+					telaIncluir = new TelaIncluirUsuario(new Usuario((int) modelTable.getValueAt(row, 0), modelTable.getValueAt(row, 1).toString(), "", (int) modelTable.getValueAt(row, 2)));
+					break;
+				}
+			}
+		}
+
+		telaIncluir.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				refreshTable();
+			}
+		});
 	}
 	
 	public void deletarRegistro(){
@@ -163,8 +224,8 @@ public class TelaCadastroClassesModelo extends JFrame{
 		String codigo = modelTable.getValueAt(row, 0).toString();
 		String message = "Deseja realmente excluir este registro?";
 		String title = "Confirmação";
-		StringTokenizer stringTokenizerDataBaseSettings = new StringTokenizer(this.tableQuery);
-
+		StringTokenizer stringTokenizerDataBaseSettings = new StringTokenizer( this.tableQuery == "pessoa As P, contas As Con" ? "contas" :	this.tableQuery	);
+		
 		if (JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 			dataBase.delete(stringTokenizerDataBaseSettings.nextToken(" "), "codigo = " + codigo);
 			modelTable.removeRow(row);
@@ -201,14 +262,23 @@ public class TelaCadastroClassesModelo extends JFrame{
 			try {
 				relatorioListagem.finalizarRelatorio();
 			} catch (IOException e) {
-				e.printStackTrace(); //TODO: Mensagem do catch
+				ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 			}
 			relatorioListagem.abrirRelatorio();
 		} else {
 			//TODO: Mensagem do else
 		}
 	}
-
+	
+	public void refreshTable(){
+		while (modelTable.getRowCount() > 0) {  
+			modelTable.removeRow(0);  
+	    } 
+		
+		fillModelTable();
+	}
+	
 	//Get's and set's methods
 	//Override methods
 }
+ 

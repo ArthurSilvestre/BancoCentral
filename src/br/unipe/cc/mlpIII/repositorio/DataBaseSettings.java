@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import br.unipe.cc.mlpIII.util.ErroLog;
+
 public class DataBaseSettings {
 	Map<String, String> dataBaseSettingsMap;
 	private String host;
@@ -49,9 +51,9 @@ public class DataBaseSettings {
 			}
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace(); //TODO: Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		} catch (IOException e) {
-			e.printStackTrace(); //TODO: Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 	}
 	

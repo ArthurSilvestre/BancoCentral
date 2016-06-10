@@ -10,6 +10,8 @@ import javax.mail.Part;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 
+import br.unipe.cc.mlpIII.util.ErroLog;
+
 public class Email {
     private String from;
     private String to;
@@ -41,8 +43,7 @@ public class Email {
 			this.multipart.addBodyPart(textBody);
 			this.multipart.addBodyPart(this.attachment);
 		} catch (MessagingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			ErroLog.gravarErroLog(e1.toString(), e1.getStackTrace());
 		} 
 	}
 

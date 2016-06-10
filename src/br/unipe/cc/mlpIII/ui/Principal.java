@@ -1,14 +1,23 @@
 package br.unipe.cc.mlpIII.ui;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import br.unipe.cc.mlpIII.ui.gui.TelaLogin;
 import br.unipe.cc.mlpIII.ui.gui.TelaPrincipal;
 import br.unipe.cc.mlpIII.util.ErroLog;
 
+@SuppressWarnings("unused")
 public class Principal {
-	
-	@SuppressWarnings("unused")
+
+	private static TelaLogin Login;
+	private static TelaPrincipal telaPrincipal;
+
 	public static void main(String[] args) {
 	
 		if (ErroLog.verificaErroLog()){
@@ -19,18 +28,25 @@ public class Principal {
 					//TODO: Mensagem de que não foi possível enviar o erro.log.
 				}
 			} catch (AddressException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 			}
 		}
 
-		//TelaLogin Login = new TelaLogin();
-		
-		//if (Login.getAutorized)
-			TelaPrincipal telaPrincipal = new TelaPrincipal();
+		Login = new TelaLogin();
+		Login.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				
+				Login.getDataBase().closeConnection();
+				
+				if (Login.isAutorizado())
+					telaPrincipal = new TelaPrincipal();
+				
+			}
+		});
+
 	}
 	
 }

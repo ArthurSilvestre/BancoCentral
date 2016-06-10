@@ -3,6 +3,8 @@ package br.unipe.cc.mlpIII.repositorio;
 import java.sql.*;
 import java.util.List;
 
+import br.unipe.cc.mlpIII.util.ErroLog;
+
 public class DataBase {
 	private DataBaseSettings settings;
 	private Connection dbConnection;
@@ -22,9 +24,9 @@ public class DataBase {
 			this.dbConnection = DriverManager.getConnection("jdbc:mysql://" + this.settings.getHost() + ":" + this.settings.getPort() + "/" + this.settings.getData(), this.settings.getUser(), this.settings.getPass());
 			this.dbStatement = dbConnection.createStatement();
 		} catch (SQLException e) {
-			e.printStackTrace(); //TODO: Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace(); //TODO: Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 		
 	}
@@ -35,7 +37,7 @@ public class DataBase {
 			this.dbConnection.close();
 			this.dbStatement.close();
 		} catch (SQLException e) {
-			e.printStackTrace(); //TODO: Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 		
 		close();
@@ -56,11 +58,19 @@ public class DataBase {
 		try {
 			resultSetQuery = this.dbStatement.executeQuery(stringQuery);
 		} catch (SQLException e) {
-			e.printStackTrace(); //TODO: Mensagem do catch
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 		}
 		
 		this.dbResultSet = resultSetQuery;
 		return resultSetQuery;
+	}
+	
+	public void execute(String stringQuery){
+		try {
+			this.dbStatement.execute(stringQuery);
+		} catch (SQLException e) {
+			ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
+		}
 	}
 	
 	public void insert(String table, List<String> fields, List<String> values){
@@ -71,13 +81,13 @@ public class DataBase {
 		if (fields.isEmpty() || values.isEmpty() || table.isEmpty() || (fields.size() != values.size())){
 			//TODO: Gerar mensagem de que não foi possível inserir os dados no banco.
 		} else {
-			for	(String	field : fields) sInsertFields += (f++ == 0 ? "" : "," + field);
-			for	(String	value : values) sInsertValues += (v++ == 0 ? "" : "," + value);
+			for	(String	field : fields) sInsertFields += (f++ == 0 ? "" : ",") + field;
+			for	(String	value : values) sInsertValues += (v++ == 0 ? "" : ",") + value;
 
 			try {
 				this.dbStatement.executeQuery("INSERT INTO " + table + "(" + sInsertFields + ") VALUES (" + sInsertValues + ")");
 			} catch (SQLException e) {
-				e.printStackTrace(); //TODO: Mensagem do catch
+				ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 			}
 		}
 	}
@@ -99,15 +109,12 @@ public class DataBase {
 			try {
 				this.dbStatement.execute("UPDATE " + table + " SET " + sUpdates + (condition.isEmpty() ? "" : " WHERE " + condition));
 			} catch (SQLException e) {
-				e.printStackTrace(); //TODO: Mensagem do catch
+				ErroLog.gravarErroLog(e.toString(), e.getStackTrace());
 			}
 		}
 	}
 	
 	public void delete(String table, String condition){
-		
-		System.out.println("DELETE FROM " + table + " WHERE " + condition);
-		
 		if (!condition.isEmpty()){
 			try {
 				this.dbStatement.execute("DELETE FROM " + table + " WHERE " + condition);
