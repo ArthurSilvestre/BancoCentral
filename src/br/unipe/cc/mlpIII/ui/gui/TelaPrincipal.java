@@ -42,6 +42,11 @@ public class TelaPrincipal extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(MAXIMIZED_BOTH);
 		getContentPane().setLayout(null);
+		btnEfetuarLancamentos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TelaLancamentos telaLancamentos = new TelaLancamentos();
+			}
+		});
 		
 		this.btnEfetuarLancamentos.setLocation(new Point(10, 53));
 		this.btnEfetuarLancamentos.setSize(new Dimension(300, 60));

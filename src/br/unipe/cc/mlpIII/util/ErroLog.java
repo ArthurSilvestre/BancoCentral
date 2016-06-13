@@ -92,7 +92,7 @@ public class ErroLog {
 	
 	public final static boolean enviarErroLog() throws AddressException, MessagingException {
 		try {
-	        String subject = new String("Banco Central - Erro.log");
+	        String subject = new String("BANKing - Erro.log");
 	        String content = new String("Segue anexo o arquivo 'erro.log' que contem dados para que o desenvolvedor analise a integridade das devidas rotinas informadas no arquivo.");
 
 	        EmailSettings emailSettings = new EmailSettings("smtp.gmail.com", 465, "arthursilves@gmail.com", "Silverxwk190");

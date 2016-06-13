@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Toolkit;
 
 public class TelaExtrato extends JFrame{
 	private static final long serialVersionUID = -7116841538875284209L;
@@ -31,6 +32,7 @@ public class TelaExtrato extends JFrame{
 	private JLabel lblSaldoAtual;
 
 	public TelaExtrato() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaExtrato.class.getResource("/javax/swing/plaf/metal/icons/ocean/computer.gif")));
 		dataBase.openConnection();
 		fillComboBox();
 		initialize();

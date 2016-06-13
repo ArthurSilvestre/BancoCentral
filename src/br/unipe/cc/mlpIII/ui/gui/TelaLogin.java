@@ -37,8 +37,8 @@ public class TelaLogin extends JFrame{
 
 	private void initialize() {
 		new JFrame();
-		setTitle("Banco Central");
-		setBounds(100, 100, 220, 145);
+		setTitle("BANKing");
+		setBounds(100, 100, 235, 145);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("imagens\\bancocentral.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -55,16 +55,16 @@ public class TelaLogin extends JFrame{
 				}
 			}
 		});
-		btnNewButton.setBounds(66, 73, 128, 23);
+		btnNewButton.setBounds(66, 73, 143, 23);
 		getContentPane().add(btnNewButton);
 		
 		textFieldID = new JTextField();
-		textFieldID.setBounds(66, 11, 128, 20);
+		textFieldID.setBounds(66, 11, 143, 20);
 		getContentPane().add(textFieldID);
 		textFieldID.setColumns(10);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(66, 42, 128, 20);
+		passwordField.setBounds(66, 42, 143, 20);
 		getContentPane().add(passwordField);
 		
 		JLabel lblNewLabel = new JLabel("Usu\u00E1rio");
