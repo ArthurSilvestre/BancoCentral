@@ -24,7 +24,7 @@ public class TelaPrincipal extends JFrame{
 	private JLabel backgroundLabel;
 	
 	private JButton btnEfetuarLancamentos = new JButton("Efetuar Lan\u00E7amentos");
-	private JButton btnGerarExtrato = new JButton("Gerar Extrato");
+	private JButton btnGerarExtrato = new JButton("Visualizar Extrato");
 	private JButton btnContas = new JButton("Contas");
 	private JButton btnPessoaFsica = new JButton("Pessoa F\u00EDsica");
 	private JButton btnPessoaJurdica = new JButton("Pessoa Jur\u00EDdica");
@@ -47,6 +47,11 @@ public class TelaPrincipal extends JFrame{
 		this.btnEfetuarLancamentos.setSize(new Dimension(300, 60));
 		this.btnEfetuarLancamentos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		this.btnEfetuarLancamentos.setIcon(new ImageIcon("imagens\\lancamento.png"));
+		btnGerarExtrato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TelaExtrato telaExtrato = new TelaExtrato();
+			}
+		});
 		
 		this.btnGerarExtrato.setLocation(new Point(10, 124));
 		this.btnGerarExtrato.setSize(new Dimension(300, 60));
